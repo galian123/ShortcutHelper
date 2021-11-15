@@ -1,0 +1,107 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.galian.shortcuthelper"
+        minSdk 30
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
+    }
+
+    flavorDimensions "version", "api"
+    productFlavors {
+        full {
+            dimension "version"
+            applicationIdSuffix ".full"
+            versionNameSuffix "-full"
+        }
+        demo {
+            dimension "version"
+            applicationId "com.galian.shortcuthelper.demo"
+            versionNameSuffix "-demo"
+        }
+
+        minApi30 {
+            dimension "api"
+            minSdkVersion 30
+            versionCode 300000 + android.defaultConfig.versionCode
+            versionNameSuffix "-minApi30"
+        }
+
+        minApi29 {
+            dimension "api"
+            minSdkVersion 29
+            versionCode 290000 + android.defaultConfig.versionCode
+            versionNameSuffix "-minApi29"
+        }
+
+        minApi28 {
+            dimension "api"
+            minSdkVersion 28
+            versionCode 280000 + android.defaultConfig.versionCode
+            versionNameSuffix "-minApi28"
+        }
+
+        minApi27 {
+            dimension "api"
+            minSdkVersion 27
+            versionCode 270000 + android.defaultConfig.versionCode
+            versionNameSuffix "-minApi27"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
