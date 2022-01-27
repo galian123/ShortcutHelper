@@ -1,6 +1,6 @@
 # ShortcutHelper
 
-For Android 11 (Api 30)
+For Android 11 (Api 30) and above.
 
 Create shortcut for `com.android.documentsui.files.FilesActivity`
 
